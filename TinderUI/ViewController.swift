@@ -18,7 +18,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         card.center = CGPoint(x: view.center.x + point.x, y: view.center.y + point.y)
     }
     
-    
+    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panView(sender:)))
+
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -31,6 +32,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! SwipeCollectionViewCell
+        cell.addGestureRecognizer(panGesture)
         cell.text.backgroundColor = colorValiation[indexPath.row]
         cell.text.text = labelArray[indexPath.row]
         cell.text.textColor = .white
@@ -46,6 +48,13 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         self.collectionView!.register(UINib(nibName: "SwipeCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
         labelArray = ["テスト", "テスト2", "テスト3", "テスト4", "テスト5", "テスト6" ]
         colorValiation = [.black, .red, .green, .blue, .cyan, .yellow]
+    }
+    
+    @objc func panView(sender: UIPanGestureRecognizer) {
+        let card = sender.view!
+        let point = sender.translation(in: view)
+        let xFromCenter = card.center.x - view.center.x
+        card.center = CGPoint(x: view.center.x + point.x, y: view.center.y + point.y)
     }
 
 
